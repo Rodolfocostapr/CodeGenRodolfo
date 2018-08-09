@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<frameweb:FramewebProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:frameweb="http://nemo.inf.ufes.br/projects/frameweb/FW-2015" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <compose xsi:type="frameweb:PersistenceModel">
+    <packagedElement xsi:type="frameweb:PersistencePackage" name="sistema.persistence" URI="">
+      <packagedElement xsi:type="frameweb:DAOInterface" name="UsuarioDAO" infix="Usuario"/>
+      <packagedElement xsi:type="frameweb:DAOClass" name="UsuarioDAOImpl"/>
+      <packagedElement xsi:type="frameweb:DAORealization" client="//@compose.0/sistema.persistence/UsuarioDAOImpl" supplier="//@compose.0/sistema.persistence/UsuarioDAO" contract="//@compose.0/sistema.persistence/UsuarioDAO"/>
+      <packagedElement xsi:type="frameweb:DAOInterface" name="AlunoDAO" infix="Aluno"/>
+      <packagedElement xsi:type="frameweb:DAOClass" name="AlunoDAOImpl"/>
+      <packagedElement xsi:type="frameweb:DAORealization" name="" client="//@compose.0/sistema.persistence/AlunoDAOImpl" supplier="//@compose.0/sistema.persistence/AlunoDAO" contract="//@compose.0/sistema.persistence/AlunoDAO"/>
+    </packagedElement>
+  </compose>
+  <compose xsi:type="frameweb:EntityModel" name="">
+    <packagedElement xsi:type="frameweb:DomainPackage" name="sistema.model">
+      <packagedElement xsi:type="frameweb:DomainClass" name="Usuario">
+        <ownedAttribute xsi:type="frameweb:DomainAttribute" name="email" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+        <ownedAttribute xsi:type="frameweb:DomainAttribute" name="senha" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+        <ownedAttribute xsi:type="frameweb:DomainAttribute" name="nome" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+      </packagedElement>
+    </packagedElement>
+  </compose>
+  <compose xsi:type="frameweb:NavigationModel">
+    <packagedElement xsi:type="frameweb:ViewPackage" name="View Package">
+      <packagedElement xsi:type="frameweb:Page" name="index.html">
+        <ownedAttribute xsi:type="frameweb:NavigationCompositionWhole" type="//@compose.2/View%20Package/form_login" association="//@compose.2/View%20Package/@packagedElement.2"/>
+      </packagedElement>
+      <packagedElement xsi:type="frameweb:UIComponent" name="form_login">
+        <ownedAttribute xsi:type="frameweb:UIComponentField" name="email">
+          <type xsi:type="frameweb:Tag" href="JSF_PrimeFaces.frameweb#//PrimeFaces/inputText"/>
+        </ownedAttribute>
+        <ownedAttribute xsi:type="frameweb:UIComponentField" name="senha">
+          <type xsi:type="frameweb:Tag" href="JSF_PrimeFaces.frameweb#//PrimeFaces/inputText"/>
+        </ownedAttribute>
+        <ownedAttribute xsi:type="frameweb:UIComponentField" name="login">
+          <type xsi:type="frameweb:Tag" href="JSF_PrimeFaces.frameweb#//PrimeFaces/button"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xsi:type="frameweb:NavigationAssociation" memberEnd="//@compose.2/View%20Package/@packagedElement.2/@ownedEnd.0 //@compose.2/View%20Package/index.html/@ownedAttribute.0">
+        <ownedEnd xsi:type="frameweb:NavigationCompositionPart" type="//@compose.2/View%20Package/index.html" association="//@compose.2/View%20Package/@packagedElement.2"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="frameweb:ControllerPackage" name="Controller Package">
+      <packagedElement xsi:type="frameweb:FrontControllerClass" name="UsuarioController">
+        <ownedOperation xsi:type="frameweb:FrontControllerMethod" name="Login">
+          <methodType xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="frameweb:FrontControllerDependency" client="//@compose.2/View%20Package/form_login" supplier="//@compose.2/Controller%20Package/UsuarioController"/>
+  </compose>
+</frameweb:FramewebProject>
