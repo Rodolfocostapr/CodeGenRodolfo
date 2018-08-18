@@ -207,6 +207,45 @@ namespace GeradorFrameweb
                         methods += text_method;
                     }
 
+                    //SECURED METHOD
+                    var secured_class_methods = _class.Componentes.Where(x => x.xsi_type == "frameweb:AuthServiceMethod").ToList();
+
+                    methods = string.Empty;
+                    foreach (var method in secured_class_methods)
+                    {
+                        string text_method;
+                        if (method.isAbstract)
+                        {
+                            text_method = File.ReadAllText(config.dir_template + config.lang + Path.DirectorySeparatorChar + "Abstract" + method.getXsiTypeFile());
+                            text_method = text_method.Replace("FW_METHOD_VISIBILITY", "public abstract");
+                        }
+                        else
+                        {
+                            text_method = File.ReadAllText(config.dir_template + config.lang + Path.DirectorySeparatorChar + method.getXsiTypeFile());
+                            text_method = text_method.Replace("FW_METHOD_VISIBILITY", "public");
+                        }
+
+                        var methodParameters = method.Componentes.Where(x => x.tag == "ownedParameter").ToList();
+                        string text_method_parameters = string.Empty;
+                        if (methodParameters != null && methodParameters.Count() > 0)
+                        {
+                            foreach (var methodParameter in methodParameters)
+                            {
+                                text_method_parameters += string.Format("{0} {1},", methodParameter.getType(), methodParameter.name);
+                            }
+
+                            text_method_parameters = text_method_parameters.Substring(0, text_method_parameters.Length - 1);
+                        }
+
+                        text_method = text_method.Replace("FW_METHOD_PARAMETERS", text_method_parameters);
+
+                        text_method = text_method.Replace("FW_METHOD_RETURN_TYPE", method.GetMethodTypeDomainAttribute());
+                        text_method = text_method.Replace("FW_METHOD_NAME", method.name);
+                        text_method = text_method.Replace("FW_PERM_NAME_APP_METHOD", method.permissionName);
+
+                        methods += text_method;
+                    }
+
                     tags_class.Add("FW_CLASS_METHOD", methods);
 
                 }

@@ -53,7 +53,9 @@
   
 <compose xsi:type="frameweb:ApplicationModel" name="Application Model">
   <packagedElement xsi:type="frameweb:ApplicationPackage" name="Application Package">
-    <packagedElement xsi:type="frameweb:AuthServiceClass" name="AfastamentoServiceImp" permissionName="PERM_AFAST"/>
+      <packagedElement xsi:type="frameweb:AuthServiceClass" name="AfastamentoServiceImp" permissionName="PERM_AFAST">
+        <ownedOperation xsi:type="frameweb:AuthServiceMethod" name="cancel" permissionName="PERM_AFAST_CANCEL"/>
+      </packagedElement>
     <packagedElement xsi:type="frameweb:ServiceInterface" name="AfastamentoService"/>
     <packagedElement xsi:type="frameweb:ServiceRealization" client="//@compose.2/Application%20Package/AfastamentoServiceImp" supplier="//@compose.2/Application%20Package/AfastamentoService"/>
     <packagedElement xsi:type="frameweb:ServiceInterface" name="RegularService"/>
