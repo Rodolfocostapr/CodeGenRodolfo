@@ -18,7 +18,10 @@ namespace GeradorFrameweb
         {
 
             /// DomainPackage
-            var domainClass = componente.Componentes.SelectMany(x => x.Componentes).Where(y => y.xsi_type == "frameweb:DomainClass").ToList();
+            var domainClass = componente.Componentes.SelectMany(x => x.Componentes).Where(y => y.xsi_type == "frameweb:DomainClass" ||
+                                                                                                y.xsi_type == "frameweb:AuthUser" ||
+                                                                                                y.xsi_type == "frameweb:AuthRole" ||
+                                                                                                y.xsi_type == "frameweb:AuthPermission").ToList();
 
             //domainClass = domainClass.Where(x => x.name == "Person").ToList();
 
@@ -53,7 +56,11 @@ namespace GeradorFrameweb
                     }
 
 
-                    var _class_propeties = _class.Componentes.Where(x => x.xsi_type == "frameweb:DomainAttribute").ToList();
+                    var _class_propeties = _class.Componentes.Where(x => x.xsi_type == "frameweb:DomainAttribute" ||
+                                                                         x.xsi_type == "frameweb:AuthUserName" ||
+                                                                         x.xsi_type == "frameweb:AuthPassword" ||
+                                                                         x.xsi_type == "frameweb:AuthRoleName" ||
+                                                                         x.xsi_type == "frameweb:AuthPermName").ToList();
 
                     string properties = string.Empty;
                     foreach (var propertie in _class_propeties)

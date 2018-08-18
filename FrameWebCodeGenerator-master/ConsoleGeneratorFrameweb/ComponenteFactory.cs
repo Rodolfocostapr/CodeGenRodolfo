@@ -65,7 +65,10 @@ namespace GeradorFrameweb
                         break;
                     case "infix":
                         filho.infix = item.Value;
-                        break;    
+                        break;
+                    case "permissionName":
+                        filho.permissionName = item.Value;
+                        break;
                 }
             }
 

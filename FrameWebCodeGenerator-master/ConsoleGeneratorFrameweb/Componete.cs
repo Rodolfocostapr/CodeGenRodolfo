@@ -25,6 +25,8 @@ namespace GeradorFrameweb
         public bool isAbstract { get; set; }
         public string generalizationSet { get; set; }
         public string infix { get; set; }
+        //auth
+        public string permissionName { get; set; }
 
         public string getXsiTypeFile()
         {

@@ -12,6 +12,31 @@
   </compose>
   <compose xsi:type="frameweb:EntityModel" name="">
     <packagedElement xsi:type="frameweb:DomainPackage" name="sistema.model">
+      
+       <packagedElement xsi:type="frameweb:AuthUser" name="User">
+        <ownedAttribute xsi:type="frameweb:AuthUserName" name="username" visibility="private">
+         <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+        <ownedAttribute xsi:type="frameweb:AuthPassword" name="password" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+        <ownedAttribute xsi:type="frameweb:IdAttribute" name="user_id" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/Long"/>
+        </ownedAttribute>
+      </packagedElement>
+      
+      <packagedElement xsi:type="frameweb:AuthRole" name="Role">
+        <ownedAttribute xsi:type="frameweb:AuthRoleName" name="roleName" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+      </packagedElement>
+      
+      <packagedElement xsi:type="frameweb:AuthPermission" name="Permission">
+        <ownedAttribute xsi:type="frameweb:AuthPermName" name="permissionName" visibility="private">
+          <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
+        </ownedAttribute>
+      </packagedElement>
+          
       <packagedElement xsi:type="frameweb:DomainClass" name="Usuario">
         <ownedAttribute xsi:type="frameweb:DomainAttribute" name="email" visibility="private">
           <type xsi:type="uml:PrimitiveType" href="JAVA.frameweb#//@compose.0/String"/>
@@ -25,6 +50,18 @@
       </packagedElement>
     </packagedElement>
   </compose>
+  
+<compose xsi:type="frameweb:ApplicationModel" name="Application Model">
+  <packagedElement xsi:type="frameweb:ApplicationPackage" name="Application Package">
+    <packagedElement xsi:type="frameweb:AuthServiceClass" name="AfastamentoServiceImp" permissionName="PERM_AFAST"/>
+    <packagedElement xsi:type="frameweb:ServiceInterface" name="AfastamentoService"/>
+    <packagedElement xsi:type="frameweb:ServiceRealization" client="//@compose.2/Application%20Package/AfastamentoServiceImp" supplier="//@compose.2/Application%20Package/AfastamentoService"/>
+    <packagedElement xsi:type="frameweb:ServiceInterface" name="RegularService"/>
+    <packagedElement xsi:type="frameweb:ServiceClass" name="RegularService"/>
+    <packagedElement xsi:type="frameweb:ServiceRealization" client="//@compose.2/Application%20Package/RegularService.1" supplier="//@compose.2/Application%20Package/RegularService"/>
+  </packagedElement>
+</compose>
+      
   <compose xsi:type="frameweb:NavigationModel">
     <packagedElement xsi:type="frameweb:ViewPackage" name="View Package">
       <packagedElement xsi:type="frameweb:Page" name="index.html">
