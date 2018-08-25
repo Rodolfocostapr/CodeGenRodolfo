@@ -18,6 +18,8 @@ namespace GeradorFrameweb
             config.dir_output_web = Utilities.ReadConfig("dir_output_web");
             config.dir_output_class = Utilities.ReadConfig("dir_output_class");
             config.ext_class = Utilities.ReadConfig("ext_class");
+            config.dir_template_sec_config = Utilities.ReadConfig("dir_template_sec_config");
+            config.dir_output_sec = Utilities.ReadConfig("dir_output_sec");
             config.dir_output = "build" + Path.DirectorySeparatorChar;
 
             try

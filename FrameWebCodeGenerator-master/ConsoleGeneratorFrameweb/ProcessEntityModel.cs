@@ -22,13 +22,15 @@ namespace GeradorFrameweb
                                                                                                 y.xsi_type == "frameweb:AuthUser" ||
                                                                                                 y.xsi_type == "frameweb:AuthRole" ||
                                                                                                 y.xsi_type == "frameweb:AuthPermission").ToList();
-
+            //DICTIONARY FOR THE SECURITY FILE
+            var tags_class_sec = new Dictionary<string, string>();
             //domainClass = domainClass.Where(x => x.name == "Person").ToList();
 
             foreach (var _class in domainClass)
             {
                 Componete generalization = null;
                 var tags_class = new Dictionary<string, string>();
+
                 tags_class.Add("FW_CLASS_NAME", _class.name);
 
                 if (_class.Componentes != null)
@@ -118,8 +120,52 @@ namespace GeradorFrameweb
                 {
                 }
                 File.WriteAllText(Path.Combine(config.dir_output, config.dir_output_class, _class.name + config.ext_class), text);
+
+                //GET TAGS FOR THE SECURITY FILE
+                switch (_class.xsi_type)
+                {
+                    case "frameweb:AuthUser":
+                        tags_class_sec.Add("FW_AUTH_USER", _class.name);
+                        tags_class_sec.Add("FW_USER_ID", _class.Componentes.Where(x => x.xsi_type == "frameweb:IdAttribute").FirstOrDefault().name);
+                        tags_class_sec.Add("FW_AUTHAT_USER_USERNAME", _class.Componentes.Where(x => x.xsi_type == "frameweb:AuthUserName").FirstOrDefault().name);
+                        tags_class_sec.Add("FW_AUTHAT_USER_PASSWORD", _class.Componentes.Where(x => x.xsi_type == "frameweb:AuthPassword").FirstOrDefault().name);
+                        break;
+                    case "frameweb:AuthRole":
+                        tags_class_sec.Add("FW_AUTH_ROLE", _class.name);
+                        tags_class_sec.Add("FW_AUTHAT_ROLE_ROLENAME", _class.Componentes.Where(x => x.xsi_type == "frameweb:AuthRoleName").FirstOrDefault().name);
+                        break;
+                    case "frameweb:AuthPermission":
+                        tags_class_sec.Add("FW_AUTH_PERM", _class.name);
+                        tags_class_sec.Add("FW_AUTHAT_PERM_NAME", _class.Componentes.Where(x => x.xsi_type == "frameweb:AuthPermName").FirstOrDefault().name);
+                        break;
+                }
+
             }
 
+            var text_sec = "";
+
+            try
+            {
+                text_sec = File.ReadAllText(Path.Combine(config.dir_output, "src\\sec-config.txt"));
+            }
+            catch
+            {
+                text_sec = File.ReadAllText(config.dir_template_sec_config);
+            }
+
+            foreach (var item in tags_class_sec)
+            {
+                text_sec = text_sec.Replace(item.Key, item.Value);
+            }
+
+            try
+            {
+               // Directory.CreateDirectory(Path.Combine(config.dir_output,"src\\sec-config.txt"));
+            }
+            catch
+            {
+            }
+            File.WriteAllText(Path.Combine(config.dir_output, "src\\sec-config.txt"), text_sec);
         }
 
     }

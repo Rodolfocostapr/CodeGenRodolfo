@@ -13,5 +13,7 @@ namespace GeradorFrameweb
         public string ext_class { get; set; }
         public string dir_output { get; set; }
         public string dir_output_web { get; set; }
+        public string dir_template_sec_config { get; set; }
+        public string dir_output_sec { get; set; }
     }
 }
