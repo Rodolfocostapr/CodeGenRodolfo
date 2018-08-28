@@ -16,7 +16,7 @@
     		<url-pattern>/secured/*</url-pattern>
   		</web-resource-collection>
   		<auth-constraint>
-     		<role-name>USER</role-name>
+     		<role-name>PERM_USER</role-name>
   		</auth-constraint>
 	</security-constraint>
     
@@ -30,7 +30,7 @@
 	</security-constraint>
 	
 	<security-role>
-	  <role-name>USER</role-name>
+	  <role-name>PERM_USER</role-name>
 	</security-role>
 
 	******* CODE TO BE ADDED TO THE STANDALONE.XML FILE ********

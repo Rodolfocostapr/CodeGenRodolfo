@@ -57,6 +57,17 @@ namespace GeradorFrameweb
                     methods += text_method;
                 }
 
+                //ADD LOGIN PROCESSING METHOD
+                var auth_proc_method = controller.Componentes.Where(x => x.xsi_type == "frameweb:AuthProcessingMethod").ToList();
+                foreach (var method in auth_proc_method)
+                {
+                    var text_method = File.ReadAllText(config.dir_template + config.lang + Path.DirectorySeparatorChar + method.getXsiTypeFile());
+                    text_method = text_method.Replace("FW_METHOD_RETURN_TYPE", method.methodType);
+                    text_method = text_method.Replace("FW_METHOD_NAME", method.name);
+
+                    methods += text_method;
+                }
+
                 tags_controller.Add("FW_FRONT_CONTROLLER_METHOD", methods);
 
                 var text = File.ReadAllText(config.dir_template + config.lang + Path.DirectorySeparatorChar + controller.getXsiTypeFile());
@@ -78,7 +89,8 @@ namespace GeradorFrameweb
 
             var views = componente.Componentes.Where(x => x.xsi_type == "frameweb:ViewPackage").ToList().SelectMany(x => x.Componentes).ToList();
 
-            var views_pages = views.Where(x => x.xsi_type == "frameweb:Page").ToList();
+            var views_pages = views.Where(x => x.xsi_type == "frameweb:Page"||
+                                                x.xsi_type == "frameweb:AuthPage").ToList();
             foreach (var page in views_pages)
             {
                 string body = string.Empty;
@@ -93,6 +105,14 @@ namespace GeradorFrameweb
                         if (comp.xsi_type == "frameweb:UIComponent")// Form
                         {
                             body_form = File.ReadAllText(config.dir_template + "framework" + Path.DirectorySeparatorChar + comp.getXsiTypeFile());
+                        }
+                        else
+                        {
+                            if (comp.xsi_type == "frameweb:AuthForm")// Form
+                            {
+                                //USES A LOGIN FORM TEMPLATE INSTEAD
+                                body_form = File.ReadAllText(config.dir_template + "framework" + Path.DirectorySeparatorChar + comp.getXsiTypeFile());
+                            }
                         }
                         string body_form_comp = string.Empty;
                         foreach (var item in comp.Componentes)
@@ -112,10 +132,53 @@ namespace GeradorFrameweb
                 }
 
                 var text = File.ReadAllText(config.dir_template + "framework" + Path.DirectorySeparatorChar + page.getXsiTypeFile());
-                text = text.Replace("FW_BODY", body);
+                text = text.Replace("FW_BODY", body); 
 
                 File.WriteAllText(Path.Combine(config.dir_output, config.dir_output_web, page.name), text);
             }
+
+            var login_page = views.Where(x => x.xsi_type == "frameweb:AuthPage").FirstOrDefault();
+
+                if (login_page != null)
+                {
+                    //DICTIONARY FOR THE SECURITY FILE
+                    var tags_class_sec = new Dictionary<string, string>();
+                    tags_class_sec.Add("FW_AUTH_LOGIN_PAGE", login_page.name);
+
+                    var login_form = views.Where(x => x.xsi_type == "frameweb:AuthPage").FirstOrDefault();
+
+                    //GETTING THE SUCCESS AND FAILURE URL
+                    var authSuccessUrl = componente.Componentes.Where(x => x.xsi_type == "frameweb:AuthSuccessUrl").FirstOrDefault().getSupplier();
+                    var authFailureUrl = componente.Componentes.Where(x => x.xsi_type == "frameweb:AuthFailureUrl").FirstOrDefault().getSupplier();
+
+                tags_class_sec.Add("FW_AUTH_LOGIN_SUCC_URL", authSuccessUrl);
+                    tags_class_sec.Add("FW_AUTH_LOGIN_FAIL_URL", authFailureUrl);
+
+                    var text_sec = "";
+
+                    try
+                    {
+                        text_sec = File.ReadAllText(Path.Combine(config.dir_output, "src\\sec-config.txt"));
+                    }
+                    catch
+                    {
+                        text_sec = File.ReadAllText(config.dir_template_sec_config);
+                    }
+
+                foreach (var item in tags_class_sec)
+                    {
+                        text_sec = text_sec.Replace(item.Key, item.Value);
+                    }
+
+                    try
+                    {
+                        // Directory.CreateDirectory(Path.Combine(config.dir_output,"src\\sec-config.txt"));
+                    }
+                    catch
+                    {
+                    }
+                    File.WriteAllText(Path.Combine(config.dir_output, "src\\sec-config.txt"), text_sec);
+                }
 
             Utilities.Log("Code generated successfully.");
 
